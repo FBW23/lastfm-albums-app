@@ -17,6 +17,8 @@
   "author": "Steve Buscemi",
   "license": "MIT",
   "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.5.0",
+    "babel-polyfill": "^6.5.0",
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
     "autoprefixer": "^9.6.1",
@@ -37,5 +39,8 @@
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.2.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "dotenv-webpack": "^1.8.0",
+    "lodash": "^4.17.15"
+  }
 }

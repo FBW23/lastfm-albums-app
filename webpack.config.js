@@ -3,12 +3,16 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
+const Dotenv = require('dotenv-webpack');
 
 const config = {
-  entry: './src/scripts/index.js',
+  entry: ['babel-polyfill', './src/scripts/index.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: path.join('scripts', 'bundle.js')
+    filename: path.join('scripts', 'bundle.js'),
+  },
+  node: {
+    fs: 'empty',
   },
   module: {
     rules: [
@@ -20,9 +24,9 @@ const config = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env'],
-            sourceMaps: true
-          }
-        }
+            sourceMaps: true,
+          },
+        },
       },
       // index.html
       {
@@ -30,44 +34,44 @@ const config = {
         use: [
           {
             loader: 'html-loader',
-            options: { minimize: true }
-          }
-        ]
+            options: { minimize: true },
+          },
+        ],
       },
       // Styles
       {
         test: /\.css$|\.scss$/,
         use: [
           {
-            loader: 'style-loader'
+            loader: 'style-loader',
           },
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           {
             loader: 'resolve-url-loader',
             options: {
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           {
             loader: 'postcss-loader',
             options: {
               sourceMap: true,
-              plugins: () => [autoprefixer()]
-            }
-          }
-        ]
+              plugins: () => [autoprefixer()],
+            },
+          },
+        ],
       },
       // Images
       {
@@ -78,10 +82,10 @@ const config = {
             options: {
               name: '[name].[ext]',
               outputPath: 'img/',
-              publicPath: '../img/'
-            }
-          }
-        ]
+              publicPath: '../img/',
+            },
+          },
+        ],
       },
       // Fonts
       {
@@ -92,24 +96,25 @@ const config = {
             options: {
               name: '[name].[ext]',
               outputPath: 'fonts/',
-              publicPath: '../fonts'
-            }
-          }
-        ]
-      }
-    ]
+              publicPath: '../fonts',
+            },
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebPackPlugin({
       template: './src/index.html',
-      filename: './index.html'
+      filename: './index.html',
     }),
     new MiniCssExtractPlugin({
       filename: 'styles/[name].css',
-      chunkFilename: 'styles/chunks/[id].css'
-    })
-  ]
+      chunkFilename: 'styles/chunks/[id].css',
+    }),
+    new Dotenv(),
+  ],
 };
 
 module.exports = (env, argv) => {
